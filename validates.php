@@ -6,7 +6,7 @@
 <!-- BEGIN HEAD -->
 <head>
      <meta charset="UTF-8" />
-    <title>J.D. School :- Admin Pannel</title>
+    <title>School Diary - Test : Admin Pannel</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -37,14 +37,37 @@
     </div>
     <div class="tab-content">
         <div id="login" class="tab-pane active">
-            <form action="validates.php" class="form-signin">
-                <p class="text-muted text-center btn-block btn btn-primary btn-rect">
-                    Enter your username and password
-                </p>
-                <input type="text" placeholder="Username" name="Uname" class="form-control" />
-                <input type="password" placeholder="Password" name="password" class="form-control" />
-                <button class="btn text-muted text-center btn-danger" type="submit">Sign in</button>
-            </form>
+            <?php
+	//GEt the value from Login PAge
+	$username=$_GET['Uname'];
+	$password=$_GET['password'];
+	//include the database coding
+	
+	include "dbconnect.php";
+	//execute the query
+	$sql="select *from login where username='$username' and password='$password'";
+	$result=$conn->query($sql);
+	//list the record
+	if($row=$result->num_rows>0)
+	{
+		session_start(); //start the session_cache_expire
+		
+		//define the session varaiable
+		
+		
+		$_SESSION['UNAME']=$username;
+
+
+		//move to welcome page
+		
+		
+		header('location: adminwelcome.php');
+	}
+	else
+		echo "<h2><p align=center>Incorrect Password</p></h2>";
+	//close the connection
+	$conn->close();
+	?>
         </div>
         <div id="forgot" class="tab-pane">
             <form action="index.html" class="form-signin">
@@ -69,7 +92,7 @@
     </div>
     <div class="text-center">
         <ul class="list-inline">
-            <li><a class="text-muted" href="login.html" data-toggle="tab">Login</a></li>
+                       <li><a class="text-muted" href="login.html" data-toggle="tab">Login</a></li>
             <li><a class="text-muted" href="#forgot" data-toggle="tab">Forgot Password</a></li>
             <li><a class="text-muted" href="#signup" data-toggle="tab">Signup</a></li>
         </ul>
